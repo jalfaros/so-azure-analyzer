@@ -15,5 +15,5 @@ params = {
 }
 
 response = requests.post(face_api_url, params=params,
-                         headers=headers, json={"url": image_url})
+    headers=headers, json={"url": image_url})
 print(json.dumps(response.json(), indent=4, sort_keys=True))

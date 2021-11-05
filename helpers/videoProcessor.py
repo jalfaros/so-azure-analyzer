@@ -19,7 +19,7 @@ def videoProcessor( videoPathFile ):
     
     while( cap.isOpened() ):
 
-        if ( count != 30 ):
+        if ( count != 10 ):
             
             frameId = cap.get(1)
             ret, frame = cap.read()
@@ -35,4 +35,6 @@ def videoProcessor( videoPathFile ):
 
     cap.release()
     print("Video processed")
+
+    
 videoProcessor('./videos/shot_at_the_night.mp4')
