@@ -37,4 +37,4 @@ def videoProcessor( videoPathFile ):
     print("Video processed")
 
     
-videoProcessor('./videos/shot_at_the_night.mp4')
+videoProcessor('../cartoons.mp4')
