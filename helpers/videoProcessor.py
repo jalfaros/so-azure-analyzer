@@ -1,8 +1,7 @@
 import cv2
 import math
 import os
-from os import mkdir
-import time
+
 
 
 def videoProcessor( videoPathFile ):
@@ -15,26 +14,22 @@ def videoProcessor( videoPathFile ):
 
     if not ( os.path.isdir( video_path_save ) ):
         os.mkdir( video_path_save )
+        while( cap.isOpened() ):
 
-    
-    while( cap.isOpened() ):
+            if ( count != 10 ):
+                
+                frameId = cap.get(1)
+                ret, frame = cap.read()
 
-        if ( count != 10 ):
-            
-            frameId = cap.get(1)
-            ret, frame = cap.read()
-
-            if not ret:
+                if not ret:
+                    break
+                if( frameId % math.floor(frameRate) == 0 ):
+                    image_filename = video_path_save + '/' + video_file_name + "%d.jpg" % count
+                    cv2.imwrite( image_filename, frame )
+                    count += 1
+            else:
                 break
-            if( frameId % math.floor(frameRate) == 0 ):
-                image_filename = video_path_save + '/' + video_file_name + "%d.jpg" % count
-                cv2.imwrite( image_filename, frame )
-                count += 1
-        else:
-            break
-
-    cap.release()
-    print("Video processed")
-
-    
-videoProcessor('./videos/shot_at_the_night.mp4')
+    else:
+        cap.release()
+        print("Video processed!")
+        return True

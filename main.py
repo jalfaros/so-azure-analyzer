@@ -1,10 +1,11 @@
-import json as JSON, os, requests
+import json, os, requests
+from helpers.videoProcessor import videoProcessor
+from decouple import config
 
 
-
-ENDPOINT = "https://so-computer-vision-warner-ignacio.cognitiveservices.azure.com/" #Agregar el endpoint
+ENDPOINT = config('ENDPOINT')
+subscription_key = config('KEY')
 analyze_url = ENDPOINT +  "vision/v3.1/analyze"
-subscription_key = "c77ecfa86d394c9389dd239aac13b6b7" #Agregar el key para el endpoint 
 headers = dict()
 headers['Ocp-Apim-Subscription-Key'] = subscription_key
 headers['Content-Type'] = 'application/octet-stream'
@@ -32,12 +33,6 @@ def binaryImageConverter( imagesFolderPath ):
     return {} if len( binaryImages ) == 0 else binaryImages
 
 
-
-binaryImages = binaryImageConverter( r'./video_images/shot_at_the_night' )
-
-
-
-
 def computerVisionImageAnalyzer( binaryImages, headers, params ):
 
     images_data_analysys = dict()
@@ -45,17 +40,25 @@ def computerVisionImageAnalyzer( binaryImages, headers, params ):
         if ( len( binaryImages ) != 0 ):       
             for data in binaryImages:
                 response = requests.post(analyze_url, headers=headers, params=params, data = binaryImages[data])
-                images_data_analysys[ data ] = response.json()
+                images_data_analysys[ data ] = response.json()     
+            return images_data_analysys
         else:
-            print("Binary dictionary empty")
+            print("Binary images dictionary empty")
+            return False
     except:
         print("Error")
+        return False
 
 
 
+video_path = './videos/shot_at_the_night.mp4'
 
-computerVisionImageAnalyzer( binaryImages, headers, params )
+if ( videoProcessor( video_path ) ):
+    
+    binaryImages = binaryImageConverter( r'./video_images/shot_at_the_night' )
+    processedImages = computerVisionImageAnalyzer( binaryImages, headers, params )
 
+    print( json.dumps( processedImages, indent=4, sort_keys=True) )
 
 
 
