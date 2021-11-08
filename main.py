@@ -1,7 +1,7 @@
-import json, os, requests
+import os, requests
 from helpers.videoProcessor import videoProcessor
+from helpers.information import informationGetter
 from decouple import config
-
 
 ENDPOINT = config('ENDPOINT')
 subscription_key = config('KEY')
@@ -51,15 +51,12 @@ def computerVisionImageAnalyzer( binaryImages, headers, params ):
 
 
 
-video_path = './videos/shot_at_the_night.mp4'
+
+video_path = './videos/faces.mp4'
+
 
 if ( videoProcessor( video_path ) ):
     
-    binaryImages = binaryImageConverter( r'./video_images/shot_at_the_night' )
-    processedImages = computerVisionImageAnalyzer( binaryImages, headers, params )
-
-    print( json.dumps( processedImages, indent=4, sort_keys=True) )
-
-
-
-
+    binaryImages = binaryImageConverter( r'./video_images/faces' )
+    analysys_response = computerVisionImageAnalyzer( binaryImages, headers, params )
+    informationGetter( analysys_response )
