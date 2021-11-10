@@ -66,8 +66,10 @@ Por último, se aplica las capacidades del multiprocesamiento para aumentar la c
  
  Clonar el repositorio:
  ```git
- git clone https://github.com/jalfaros/so-azure-analyzer.git 
+ git clone https://github.com/jalfaros/so-azure-analyzer.git
 ```
 
+ 
+Dentro del archivo llamado **main.py** definir las rutas de los videos a procesar y posteriormente ejecutar el archivo. Este mismo se encargará de realizar el convertimiento de videos a imágenes, pasar las imágenes a base 64 y posteriormente realizar la identificación utilizando los servicios.
  
 
