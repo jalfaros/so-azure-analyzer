@@ -62,7 +62,7 @@ Como resultados obtenidos, se pueden observar las distintas variables obtenidas 
 Por último, se aplica las capacidades del multiprocesamiento para aumentar la capacidad en el convertimiento de imágenes a base 64, además de abarcar una colección más amplia de imágenes para su futuro procesamiento. Cabe destacar que la velocidad de identificación de Azure no se puede ver mejorada con el multiprocesamiento ya que esta se realiza en la nube y depende directamente a la conexión de Internet además de la latencia que los servidores de Microsoft puedan tener.
  
 
-#Tutorial
+# Tutorial
  
  Clonar el repositorio:
  ```git
