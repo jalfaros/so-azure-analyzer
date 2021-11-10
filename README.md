@@ -50,4 +50,8 @@ implementados:
 computerVision()
 faceAttributes()
 ```
+ 
+ # Resultados obtenidos
+ 
+ 
 
