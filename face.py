@@ -1,16 +1,28 @@
-import os, requests
+import  os, requests
+
 from helpers.videoProcessor import videoProcessor
-from helpers.information import informationGetter
+from helpers.information import informationGetterFace
+
 from dotenv import load_dotenv
 load_dotenv()
 
-ENDPOINT = os.getenv('ENDPOINT_VISION')
-subscription_key = os.getenv('KEY_VISION')
-analyze_url = ENDPOINT +  "vision/v3.1/analyze"
+subscription_key = os.getenv('KEY_FACE')
+
+face_api_url =  os.getenv('ENDPOINT_FACE') + '/face/v1.0/detect'
+
 headers = dict()
 headers['Ocp-Apim-Subscription-Key'] = subscription_key
 headers['Content-Type'] = 'application/octet-stream'
-params = {'visualFeatures': 'Adult,Categories,Description,Faces', 'language' : 'es', 'model-version':'latest'}
+
+params = {
+    #'detectionModel': 'detection_03',
+    'returnFaceId': 'false',
+    'returnFaceLandmarks': 'false',
+    'returnFaceRectangle': 'false',
+    'returnFaceAttributes': 'age, gender, smile, glasses, emotion'
+    #facialHair, hair y otros también se pueden agregar
+}
+
 
 def binaryImageConverter( imagesFolderPath ):
 
@@ -31,14 +43,13 @@ def binaryImageConverter( imagesFolderPath ):
 
     return {} if len( binaryImages ) == 0 else binaryImages
 
-
 def computerVisionImageAnalyzer( binaryImages, headers, params ):
 
     images_data_analysys = dict()
     try:
         if ( len( binaryImages ) != 0 ):       
             for data in binaryImages:
-                response = requests.post(analyze_url, headers=headers, params=params, data = binaryImages[data])
+                response = requests.post(face_api_url, headers=headers, params=params, data = binaryImages[data])
                 images_data_analysys[ data ] = response.json() 
 
             return images_data_analysys
@@ -55,4 +66,5 @@ if ( videoProcessor( video_path ) ):
     
     binaryImages = binaryImageConverter( r'.\\video_images\\cartoons' )
     analysys_response = computerVisionImageAnalyzer( binaryImages, headers, params )
-    informationGetter( analysys_response )
+    informationGetterFace( analysys_response )
+
