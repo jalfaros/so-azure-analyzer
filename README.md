@@ -53,5 +53,21 @@ faceAttributes()
  
  # Resultados obtenidos
  
+![gráfico_1](https://user-images.githubusercontent.com/42163361/141186810-ee5be68c-d81b-4b8d-b15f-e63527f1b25a.jpeg)
+![gráfico_2](https://user-images.githubusercontent.com/42163361/141186811-fd60030e-15f1-4a02-a99a-b7c430e912ec.jpeg)
+
+ 
+Como resultados obtenidos, se pueden observar las distintas variables obtenidas por parte del procesamiento realizado por Azure, en la cual, se muestran distintas características que el servicio es capaz de identificar, esto con el fin de un procesamiento posterior de las imágenes.
+ 
+Por último, se aplica las capacidades del multiprocesamiento para aumentar la capacidad en el convertimiento de imágenes a base 64, además de abarcar una colección más amplia de imágenes para su futuro procesamiento. Cabe destacar que la velocidad de identificación de Azure no se puede ver mejorada con el multiprocesamiento ya que esta se realiza en la nube y depende directamente a la conexión de Internet además de la latencia que los servidores de Microsoft puedan tener.
+ 
+
+#Tutorial
+ 
+ Clonar el repositorio:
+ ```git
+ git clone https://github.com/jalfaros/so-azure-analyzer.git 
+```
+
  
 
