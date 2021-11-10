@@ -39,7 +39,7 @@ los diferentes servicios.
 Por lo que en el proceso de desarrollo se utilizó el método: 
 
 ```python
-imageConverter()
+binaryImageConverter()
 ```
 
 la función principal de este método es tomar todas las imágenes de la ruta especificada que tienen extensión **.jpg** y convertirlas a base 64 para posteriormente
