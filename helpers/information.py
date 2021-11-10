@@ -19,7 +19,7 @@ def graphicsBar(male, female, adult, young, sexual, bloody):
 def graphicsFace(smile,glasses,contempt,anger,disgust,fear,happines,neutral,sadness,surprise,total):
     left = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     height = [smile,glasses,contempt,anger,disgust,fear,happines,neutral,sadness,surprise]
-    tick_label = ['Sonriendo', 'Anteojos', 'Desprecio', 'Enojado', 'Disgustado', 'Temor', 'Felicidad', 'Neutral', 'Tristeza', 'Sorpreza']
+    tick_label = ['Sonriendo', 'Anteojos', 'Desprecio', 'Enojado', 'Disgustado', 'Temor', 'Felicidad', 'Neutral', 'Tristeza', 'Sorpresa']
     
     plt.bar(left, height, tick_label=tick_label,
             width=0.8, color=['red', 'green'])
@@ -80,13 +80,13 @@ def informationGetterFace( analysis_response ):
     sadness = 0
     surprise = 0
 
-    total = 0
+    total =  len( analysis_response )
     for img_data in analysis_response:
         img_json_data = analysis_response[img_data]
-
+        
+        
         
         for attributes in range( 0, len(img_json_data) ):
-            total += 1
 
             if(img_json_data[attributes]['faceAttributes']['smile'] == 1.0):
                 smile +=1
@@ -108,7 +108,5 @@ def informationGetterFace( analysis_response ):
                 sadness +=1              
             if(img_json_data[attributes]['faceAttributes']['emotion']['surprise'] > 0.05):
                 surprise +=1
-
-    print(total)
     graphicsFace((smile * 100 )/total ,(glasses * 100) / total ,(contempt * 100) / total ,(anger * 100) / total ,(disgust * 100) / total, (fear * 100) / total ,(happiness * 100) / total ,(neutral * 100) / total ,(sadness * 100) / total ,(surprise *100) / total , total)
                 

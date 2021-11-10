@@ -1,58 +1,50 @@
-import os, requests
 from helpers.videoProcessor import videoProcessor
-from helpers.information import informationGetter
+from helpers.imageConverter import binaryImageConverter
+from helpers.analyzer import imageAnalyzer
+from helpers.information import informationGetter, informationGetterFace
 from dotenv import load_dotenv
+import os
+
+
 load_dotenv()
 
-ENDPOINT = os.getenv('ENDPOINT_VISION')
-subscription_key = os.getenv('KEY_VISION')
-analyze_url = ENDPOINT +  "vision/v3.1/analyze"
-headers = dict()
-headers['Ocp-Apim-Subscription-Key'] = subscription_key
-headers['Content-Type'] = 'application/octet-stream'
-params = {'visualFeatures': 'Adult,Categories,Description,Faces', 'language' : 'es', 'model-version':'latest'}
-
-def binaryImageConverter( imagesFolderPath ):
-
-    binaryImages: bytes = dict()
-
-    for image_filename in os.listdir( imagesFolderPath ):
-
-        if ( image_filename.endswith(".jpg") ):
-            image_relative_path = os.path.join( imagesFolderPath, image_filename )
-            imageFile = open( image_relative_path, 'rb' )        
-            try:
-                data = imageFile.read()
-                binaryImages[ image_filename ] = data
-            except: 
-                print( 'An error occurred opening the image file' )
-            finally:
-                imageFile.close()
-
-    return {} if len( binaryImages ) == 0 else binaryImages
+ENDPOINT_VISION = os.getenv('ENDPOINT_VISION')
+ENDPOINT_FACE = os.getenv('ENDPOINT_FACE')
+subscription_key_vision = os.getenv('KEY_VISION')
+subscription_key_face = os.getenv('KEY_FACE')
+headers_vision = dict()
+headers_face = dict()
+headers_vision['Content-Type'] = 'application/octet-stream'
+headers_face['Content-Type'] = 'application/octet-stream'
+headers_vision['Ocp-Apim-Subscription-Key'] = subscription_key_vision
+headers_face['Ocp-Apim-Subscription-Key'] = subscription_key_face
 
 
-def computerVisionImageAnalyzer( binaryImages, headers, params ):
+params_vision = {'visualFeatures': 'Adult,Categories,Description,Faces', 'language' : 'es', 'model-version':'latest'}
+params_face = {
+    'returnFaceId': 'false',
+    'returnFaceLandmarks': 'false',
+    'returnFaceRectangle': 'false',
+    'returnFaceAttributes': 'age, gender, smile, glasses, emotion'
+}
 
-    images_data_analysys = dict()
-    try:
-        if ( len( binaryImages ) != 0 ):       
-            for data in binaryImages:
-                response = requests.post(analyze_url, headers=headers, params=params, data = binaryImages[data])
-                images_data_analysys[ data ] = response.json() 
 
-            return images_data_analysys
-        else:
-            print("Binary images dictionary empty")
-            return False
-    except:
-        print("Error")
-        return False
 
-video_path = 'D:\TEC\SO\SecondProject\cartoons.mp4'
 
-if ( videoProcessor( video_path ) ):
+def computerVision( video_image_path ):
+    binaryImages = binaryImageConverter( video_image_path )
+    analysis_response = imageAnalyzer( ENDPOINT_VISION, binaryImages, headers_vision, params_vision )
+    informationGetter(analysis_response)    
+
+
+def faceAttributes( video_image_path ):
+    binaryImages = binaryImageConverter( video_image_path )
+    analysis_response = imageAnalyzer( ENDPOINT_FACE, binaryImages, headers_face, params_face )
+    informationGetterFace(analysis_response)   
     
-    binaryImages = binaryImageConverter( r'.\\video_images\\cartoons' )
-    analysys_response = computerVisionImageAnalyzer( binaryImages, headers, params )
-    informationGetter( analysys_response )
+if __name__ == "__main__":
+    
+    # videoProcessor('./videos/faces.mp4') 
+    # videoProcessor('./videos/shot_at_the_night.mp4') 
+    computerVision('./video_images/faces')
+    faceAttributes('./video_images/faces')
